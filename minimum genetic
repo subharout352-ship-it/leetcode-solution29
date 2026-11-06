@@ -1,0 +1,33 @@
+class Solution(object):
+    def minMutation(self, startGene, endGene, bank):
+        """
+        :type startGene: str
+        :type endGene: str
+        :type bank: List[str]
+        :rtype: int
+        """
+        bank = set(bank)
+
+        if endGene not in bank:
+            return -1
+
+        genes = ['A', 'C', 'G', 'T']
+
+        queue = [(startGene, 0)]
+        visited = {startGene}
+
+        while queue:
+            gene, steps = queue.pop(0)
+
+            if gene == endGene:
+                return steps
+
+            for i in range(len(gene)):
+                for char in genes:
+                    new_gene = gene[:i] + char + gene[i+1:]
+
+                    if new_gene in bank and new_gene not in visited:
+                        visited.add(new_gene)
+                        queue.append((new_gene, steps + 1))
+
+        return -1
